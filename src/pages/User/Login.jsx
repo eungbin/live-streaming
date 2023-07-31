@@ -1,11 +1,22 @@
 import React, {  } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 export default function Login() {
+  const doLogin = () => {
+    axios.post('http://localhost:4000/login', null, { params: { id: 'admin', password: 'admin0922' } })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
+
   return (
     <Wrapper>
       <LoginBox>
-        <LoginBoxHeader>L O G I N</LoginBoxHeader>
+        <LoginBoxHeader>C H A T T I N G</LoginBoxHeader>
         <LoginInputContainer>
           <LoginBoxInner>ID</LoginBoxInner>
           <LoginBoxInput type='text' id='id' />
@@ -14,7 +25,7 @@ export default function Login() {
           <LoginBoxInner>PASSWORD</LoginBoxInner>
           <LoginBoxInput type='password' id='password' />
         </LoginInputContainer>
-        <LoginButton>Click for login</LoginButton>
+        <LoginButton onClick={doLogin}>Click for login</LoginButton>
       </LoginBox>
     </Wrapper>
   );
@@ -41,7 +52,7 @@ const LoginBoxHeader = styled.header`
   font-size: 1.5rem;
   color: white;
   text-shadow: 0px 0px 15px white;
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 `;
 
 const LoginInputContainer = styled.div`
