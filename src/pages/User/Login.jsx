@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -50,6 +50,7 @@ export default function Login() {
           <LoginBoxInput type='password' id='password' />
         </LoginInputContainer>
         <ErrorText display={errorText.display}>{errorText.text}</ErrorText>
+        <Link to='/register' style={{textDecoration:'none'}}><RegisterBox><RegisterText>Click for Register</RegisterText></RegisterBox></Link>
         <LoginButton onClick={doLogin}>Click for login</LoginButton>
       </LoginBox>
     </Wrapper>
@@ -112,6 +113,18 @@ const LoginButton = styled.button`
   color: white;
   box-shadow: 0px 0px 5px 1px #4A5262;
   border-radius: 10px;
+  cursor: pointer;
+`;
+
+const RegisterBox = styled.div`
+  display: flex;
+  justify-content: right;
+  margin-top: 4px;
+`;
+const RegisterText = styled.span`
+  color: white;
+  font-size: 0.8rem;
+  text-shadow: 0px 0px 10px white;
   cursor: pointer;
 `;
 
