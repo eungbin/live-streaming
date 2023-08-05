@@ -3,34 +3,39 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Register() {
   const navigate = useNavigate();
   const [errorText, setErrorText] = useState({ text: '', display: 'none' });
 
-  const doLogin = () => {
+  const doRegister = () => {
     const idElement = document.getElementById('id');
     const passwordElement = document.getElementById('password');
+    const nameElement = document.getElementById('name');
 
     const id = idElement.value;
     const password = passwordElement.value;
+    const name = nameElement.value;
 
     if(!(!!id)) {
       setErrorText({ text: '아이디를 입력해주세요.', display: 'block' }); idElement.focus(); return;
     } else if(!(!!password)) {
       setErrorText({ text: '비밀번호를 입력해주세요.', display: 'block' }); passwordElement.focus(); return;
+    } else if(!(!!name)) {
+      setErrorText({ text: '이름을 입력해주세요.', display: 'block' }); nameElement.focus(); return;
     }
-    
-    axios.post('http://localhost:4000/login', null, { params: { id: id, password: password } })
+
+    axios.post('http://localhost:4000/register', null, { params: { id: id, password: password, name: name } })
     .then(res => {
       setErrorText({ text: '', display: 'none' });
       if(res.status === 200) {
-        alert('로그인 성공!');
-        navigate('/');
+        alert('회원가입 성공!');
+        navigate('/login');
       }
     })
     .catch(err => {
-      if(err.response.status === 401 && err.response.data === 'NOT_MATCH') {
-        setErrorText({ text: '아이디 혹은 비밀번호가 일치하지 않습니다.', display: 'block' });
+      if(err.response.status === 409 && err.response.data === 'DUP_ID') {
+        setErrorText({ text: '중복된 ID입니다.', display: 'block' });
+        idElement.focus();
       } else {
         alert('예기치 못한 서버 오류가 발생하였습니다.')
       }
@@ -49,8 +54,12 @@ export default function Login() {
           <LoginBoxInner>PASSWORD</LoginBoxInner>
           <LoginBoxInput type='password' id='password' />
         </LoginInputContainer>
+        <LoginInputContainer>
+          <LoginBoxInner>NAME</LoginBoxInner>
+          <LoginBoxInput type='text' id='name' />
+        </LoginInputContainer>
         <ErrorText display={errorText.display}>{errorText.text}</ErrorText>
-        <LoginButton onClick={doLogin}>Click for login</LoginButton>
+        <LoginButton onClick={doRegister}>Click for register</LoginButton>
       </LoginBox>
     </Wrapper>
   );
