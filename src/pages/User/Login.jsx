@@ -25,6 +25,7 @@ export default function Login() {
       setErrorText({ text: '', display: 'none' });
       if(res.status === 200) {
         alert('로그인 성공!');
+        localStorage.setItem('accountInfo', id);
         navigate('/');
       }
     })
